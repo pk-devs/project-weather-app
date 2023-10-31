@@ -1,0 +1,17 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+
+body {
+text-align: left;
+padding-top: 150px;
+}
+
+.card {
+    padding-left: 5%;
+    max-width: 50 px;
+    max-height: 1000px;
+    background: green;
+}
