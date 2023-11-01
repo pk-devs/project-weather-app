@@ -128,26 +128,27 @@ const showForecast = () => {
         console.log(forecastForFiveDays)
         
         const collectedFiveDaysForecast = response.list.reduce((result, currentData) => {
-            const date = new Date(currentData.dt * 1000)
-            if(date <= forecastForFiveDays) {
+        const date = new Date(currentData.dt * 1000)
+        if(date <= forecastForFiveDays) {
                 
-                const reducedForecast = date.toISOString().split("T")[0]
-                if (!result[reducedForecast]) {
-                    result[reducedForecast] = []
-                }
-                result[reducedForecast].push(currentData)
-            }
-            return result
+        const reducedForecast = date.toISOString().split("T")[0]
+        if (!result[reducedForecast]) {
+            result[reducedForecast] = []
+        }
+        result[reducedForecast].push(currentData)
+        }
+        return result
             
         })
         console.log(collectedFiveDaysForecast)
             for(const date in collectedFiveDaysForecast) {
+                
                 if(collectedFiveDaysForecast.hasOwnProperty(date)) {
-                    
                     const forecastedDays = collectedFiveDaysForecast[date]
                     let temperature = ""
                     let feels_like = ""
                     let description = ""
+                    
                     if(Array.isArray(forecastedDays)) {
                         const groupMiddayForecast = forecastedDays.find((item) => item.dt_txt.includes("12:00:00")) // I cannot use find method to single out the midday reports in order to display them in the app, how should I do this?
                         console.log(forecastedDays)
