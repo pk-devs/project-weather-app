@@ -1,17 +1,51 @@
 * {
     margin: 0px;
     padding: 0px;
+    box-sizing: border-box;
 }
 
-
 body {
-text-align: left;
-padding-top: 150px;
+    text-align: left;
+    padding-top: 100px;
 }
 
 .card {
     padding-left: 5%;
-    max-width: 50 px;
-    max-height: 1000px;
-    background: green;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+
+.celcius-c {
+    font-size: 1.5rem;
+    
+}
+
+.weather-forecast {
+    padding-top: 3%;
+    padding-left: 5%;
+    display: grid;
+    grid-auto-flow: row;
+
+    justify-content: space-between;
+}
+
+/* Tablet */
+
+@media screen and (min-width: 768px) {
+    .weather-forecast {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Desktop */
+
+@media screen and (min-width: 1200px) {
+    .weather-forecast {
+        grid-template-columns: repeat(5, 1fr);
+    }
 }
