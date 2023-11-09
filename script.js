@@ -35,7 +35,7 @@ const displayWeather = () => {
         weatherToday.innerHTML = 
         `
 
-        <div class="card"> 
+        <div class="weatherToday"> 
         <h1>${temperature}<span class="celcius-c">°C</span></h1> 
         <h2>${place} </h2>
         <p>${description}</p>
@@ -87,9 +87,10 @@ const showForecast = () => {
             
             weatherForecast.innerHTML +=
             `
-            <p>${weekdays[currentDay]}</p>
+            <div class="weatherToday">
+            <p><strong>${weekdays[currentDay]}</strong></p>
             <p>Midday ${tempDay}°C / Midnight ${tempNight}°C</p>
-            `
+            </div>`
         })
 
     }).catch((error ) => {

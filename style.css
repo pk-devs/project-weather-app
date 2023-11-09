@@ -7,31 +7,34 @@
 body {
     text-align: left;
     padding-top: 100px;
-}
-
-.card {
-    padding-left: 5%;
     max-width: 100%;
     margin: 0 auto;
 }
+
+
 
 h1 {
     font-size: 4rem;
 }
 
-
+p {
+    padding-top: 2%;
+}
 .celcius-c {
     font-size: 1.5rem;
     
 }
-
+.weatherToday {
+    padding-left: 3%;
+}
 .weather-forecast {
-    padding-top: 3%;
-    padding-left: 5%;
+    padding-top: 5%;
+    padding-left: 3%;
+    
     display: grid;
     grid-auto-flow: row;
 
-    justify-content: space-between;
+    
 }
 
 /* Tablet */
@@ -39,16 +42,16 @@ h1 {
 @media screen and (min-width: 768px) {
     .weather-forecast {
         grid-template-columns: repeat(2, 1fr);
-        justify-content: space-between;
+       
     }
 }
 
-/* Desktop 
+/* Desktop */
 
 @media screen and (min-width: 1200px) {
     .weather-forecast {
         grid-template-columns: repeat(5, 1fr);
-        justify-content: space-between;
+        
+        
     }
 }
-*/
