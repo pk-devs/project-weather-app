@@ -11,13 +11,8 @@ const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Frida
 
 const displayWeather = () => {
     
-    // tried with at searchbar first but the data recieved from API was not as expected.
-    // let searchValue = searchInput.value 
-    // const url = `${apiUrl}?q=${searchValue}&limit=5&appid=${apiKey}`
-    
     const url = `https://api.openweathermap.org/data/2.5/weather?q=Stockholm,Sweden&units=metric&appid=${apiKey}`
    
-    
     fetch(url).then((response) => {
         if (!response.ok) {
             throw new Error("We did not manage to recieve the data.")
@@ -28,10 +23,7 @@ const displayWeather = () => {
         
         const place = response.name 
         const temperature = response.main.temp.toFixed()
-        // const feelsLike = response.main.feels_like.toFixed(1) Did not need this anymore after feedback from teacher
         const description = response.weather[0].description
-        const currentTime = new Date() 
-        // const time = `${currentTime.getHours()}:${currentTime.getMinutes()}` Did not need this anymore after feedback from teacher
         const sunriseRawTime = response.sys.sunrise * 1000
         const sunsetRawTime = response.sys.sunset * 1000
         const sunset = new Date(sunsetRawTime) 
@@ -39,8 +31,86 @@ const displayWeather = () => {
         const sunriseTime = `${sunrise.getHours()}:${sunrise.getMinutes()}`
         const sunsetTime = `${sunset.getHours()}:${sunset.getMinutes()}`
         
+        weatherToday.innerHTML = ""
+        weatherToday.innerHTML = 
+        `
 
-        // const icon = ""
+        <div class="card"> 
+        <h1>${temperature}<span class="celcius-c">°C</span></h1> 
+        <h2>${place} </h2>
+        <p>${description}</p>
+        <br>
+        <p>Sunrise: ${sunriseTime} Sunset: ${sunsetTime} </p>
+        </div>
+        `
+    }).catch(error => {
+        console.log("Something went wrong:", error)
+    })
+    
+}
+
+displayWeather()
+
+// 5-day forecast 
+
+const showForecast = () => {
+    const url = `http://api.openweathermap.org/data/2.5/forecast?lat=59.3326&lon=18.0649&units=metric&appid=${apiKey}`
+    
+    fetch(url)
+    .then((response) => {
+        if(!response.ok) {
+            throw new Error("No connection", error)
+        }
+        return response.json()
+        
+    })
+    
+    .then((response)=> {
+        // filter through each response and create array with data
+        const temperatureMidday = response.list.filter(item => item.dt_txt.includes("12:00:00"))
+        const temperatureMidnight = response.list.filter(item => item.dt_txt.includes("00:00:00"))
+        const currentDay = new Date().getDay() + 1;
+
+        // Clear the container 
+        weatherForecast.innerHTML = ""
+        
+        // Check that the filter mehtod worked
+        console.log(temperatureMidday)
+        console.log(temperatureMidnight)
+
+        // Loop through arrays and display the temperature at midday and middnight
+        // Could not get the weekdays to show correctly, please help!:)
+        temperatureMidday.forEach((item, index) => {
+            
+            const tempDay = item.main.temp
+            const tempNight = temperatureMidnight[index].main.temp
+            
+            weatherForecast.innerHTML +=
+            `
+            <p>${weekdays[currentDay]}</p>
+            <p>Midday ${tempDay}°C / Midnight ${tempNight}°C</p>
+            `
+        })
+
+    }).catch((error ) => {
+        console.error("Error", error)
+    })
+}
+
+showForecast()
+
+
+
+// Extra code produced when playing around
+
+// Tried to have a seach input value 
+
+ // let searchValue = searchInput.value 
+ // const url = `${apiUrl}?q=${searchValue}&limit=5&appid=${apiKey}`
+
+// Tried to insert icons 
+
+ // const icon = ""
 
         // I tried to insert an icon based on the weather description but did not succeed. Would love to learn this :)
         
@@ -77,111 +147,3 @@ const displayWeather = () => {
         //     } 
         //       return
         // }
-
-        weatherToday.innerHTML = ""
-        weatherToday.innerHTML = 
-        `
-
-        <div class="card"> 
-        <h1>${temperature}<span class="celcius-c">°C</span></h1> 
-        <h2>${place} </h2>
-        <p>${description}</p>
-        <br>
-        <p>Sunrise: ${sunriseTime} Sunset: ${sunsetTime} </p>
-        </div>
-        `
-    }).catch(error => {
-        console.log("Something went wrong:", error)
-    })
-    
-}
-
-
-displayWeather()
-
-
-// 5-day forecast 
-
-
-const showForecast = () => {
-    const url = `http://api.openweathermap.org/data/2.5/forecast?lat=59.3326&lon=18.0649&appid=${apiKey}`
-    
-
-// API request 5-days forecast, Cannot get it to work :(
-
-    fetch(url)
-    .then((response) => {
-        if(!response.ok) {
-            throw new Error("No connection", error)
-        }
-        return response.json()
-    })
-    .then((response)=> {
-        console.log(response)
-        const today = new Date()
-        const forecastForFiveDays = new Date(today)  
-        forecastForFiveDays.setDate(forecastForFiveDays.getDate() +5)    
-        
-        const collectedFiveDaysForecast = response.list.reduce((result, currentData) => {
-            const date = new Date(currentData.dt * 1000)
-        
-        if(date <= forecastForFiveDays) {
-            const reducedForecast = date.toISOString().split("T")[0] // I cannot use find method to single out the midday reports in order to display them in the app, how should I do this?
-            if (!result[reducedForecast]) { // I cannot use find method to single out the midday reports in order to display them in the app, how should I do this?
-                result[reducedForecast] = []
-            }
-            result[reducedForecast].push(currentData)
-        }
-        return result
-            
-        })
-        console.log(collectedFiveDaysForecast)
-            
-        for(const date in collectedFiveDaysForecast) {
-            if(collectedFiveDaysForecast.hasOwnProperty(date)) {
-                const forecastedDays = collectedFiveDaysForecast[date]
-                let temperatureMidday = ""
-                let temperatureMidnight = ""
-                    
-                if(Array.isArray(forecastedDays)) {
-                    const groupMiddayForecast = forecastedDays.find((item) => item.dt_txt.includes("12:00:00")) 
-                    const groupMidnightForecast = forecastedDays.find((item) => item.dt_txt.includes("00:00:00")) 
-                    console.log(groupMiddayForecast)
-                    forecastedDays.find((item) => {console.log(item)}) 
-
-                        
-                if(groupMiddayForecast) {
-                    temperatureMidday = groupMiddayForecast.main.temp.toFixed(1)
-                    }
-                if(groupMidnightForecast) {
-                    temperatureMidnight = groupMidnightForecast.main.temp.toFixed(1)
-                    }
-                }
-                    
-                const currentDay = new Date().getDay() + 1;
-
-                
-                weatherForecast.innerHTML = ""
-                weatherForecast.innerHTML += 
-                `
-                <div class="weather-forecast"> 
-                <p>${weekdays[currentDay]}</p>
-                <p> ${temperatureMidday}°C / ${temperatureMidnight}°C </p>
-                </div>
-                `
-            }
-        }
-        
-    })
-    .catch((error ) => {
-        console.error("Error", error)
-    })
-
-}
-
-showForecast()
-
-
-
-
-
