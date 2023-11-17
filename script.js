@@ -31,6 +31,23 @@ const displayWeather = () => {
         const sunriseTime = `${sunrise.getHours()}:${sunrise.getMinutes()}`
         const sunsetTime = `${sunset.getHours()}:${sunset.getMinutes()}`
         
+        // Change icon based on description of weather (did not have time to check all conditions, sorry)
+        let weatherIcon = ""
+
+        const setWeatherIcon = () => {
+            if(description.includes("cloud")) {
+            weatherIcon = "./design/design1/assets/Group16.png"
+            } else if (description.includes("half")) {
+            weatherIcon = "./design/design1/assets/Group34.png"
+            } else if (description.includes("clear sky")) {
+            weatherIcon = "./design/design1/assets/Group36.png"
+            } else {
+            weatherIcon = ""
+            }
+        }
+
+        setWeatherIcon()
+
         weatherToday.innerHTML = ""
         weatherToday.innerHTML = 
         `
@@ -38,7 +55,7 @@ const displayWeather = () => {
         <div class="weatherToday"> 
         <h1>${temperature}<span class="celcius-c">°C</span></h1> 
         <h2>${place} </h2>
-        <p>${description}</p>
+        <p>${description} <img src="${weatherIcon}" alt="Weather Icon"></p>
         <br>
         <p>Sunrise: ${sunriseTime} Sunset: ${sunsetTime} </p>
         </div>
@@ -62,29 +79,30 @@ const showForecast = () => {
             throw new Error("No connection", error)
         }
         return response.json()
-        
     })
-    
     .then((response)=> {
         // filter through each response and create array with data
         const temperatureMidday = response.list.filter(item => item.dt_txt.includes("12:00:00"))
         const temperatureMidnight = response.list.filter(item => item.dt_txt.includes("00:00:00"))
-        const currentDay = new Date().getDay() + 1;
-
-        // Clear the container 
-        weatherForecast.innerHTML = ""
         
         // Check that the filter mehtod worked
         console.log(temperatureMidday)
         console.log(temperatureMidnight)
 
-        // Loop through arrays and display the temperature at midday and middnight
-        // Could not get the weekdays to show correctly, please help!:)
+        // Create currentDay and set to the forecast. Here I should write some code so the correct date is shown in the forecast. How?
+        const currentDay = new Date().getDay()+ 1; // i ++ ?
+
+        
+
+        weatherForecast.innerHTML = ""
+        
+        // Loop through arrays and display the temperature at midday and midnight// Could not get the weekdays to show correctly, please help!:)
         temperatureMidday.forEach((item, index) => {
+            const tempDay = item.main.temp.toFixed()
+            const tempNight = temperatureMidnight[index].main.temp.toFixed()
             
-            const tempDay = item.main.temp
-            const tempNight = temperatureMidnight[index].main.temp
-            
+            const forecastDay = (currentDay + index) % 7;
+
             weatherForecast.innerHTML +=
             `
             <div class="weatherToday">
