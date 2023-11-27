@@ -106,7 +106,7 @@ const showForecast = () => {
             weatherForecast.innerHTML +=
             `
             <div class="weatherToday">
-            <p><strong>${weekdays[currentDay]}</strong></p>
+            <p><strong>${weekdays[forecastDay]}</strong></p>
             <p>Midday ${tempDay}°C / Midnight ${tempNight}°C</p>
             </div>`
         })
