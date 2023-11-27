@@ -71,7 +71,7 @@ displayWeather()
 // 5-day forecast 
 
 const showForecast = () => {
-    const url = `http://api.openweathermap.org/data/2.5/forecast?lat=59.3326&lon=18.0649&units=metric&appid=${apiKey}`
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=59.3326&lon=18.0649&units=metric&appid=${apiKey}`
     
     fetch(url)
     .then((response) => {
